@@ -52,7 +52,7 @@ elif mode == 'tandem':
 tandem = DNN_tandem.tandem_network(INN_size=inn_size, FNN_size=fnn_size, starter_learning_rate = start_lr,decay_step = decay_step,decay_rate=decay_rate)
 
 # Restore model
-if mode == 'FNN':
+if mode == 'tandem':
 	tandem.restore_FNN('./model/DNN_tandem_FNN.ckpt')
 #tandem.restore('./model/DNN_tandem.ckpt')
 
