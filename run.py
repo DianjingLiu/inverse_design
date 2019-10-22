@@ -8,10 +8,11 @@ To reproduce the 2D deisgn result, run the code with mode='FNN' to train the for
 
 import numpy as np
 import DNN_tandem
+import os
 
 # Select training mode
-#mode = 'FNN' # Train forward neural network
-mode = 'tandem' # Train inverse part of the tandem network
+mode = 'FNN' # Train forward neural network
+#mode = 'tandem' # Train inverse part of the tandem network
 
 # network parameters
 n_input   = 9 #12
@@ -51,6 +52,8 @@ elif mode == 'tandem':
 # Build network
 tandem = DNN_tandem.tandem_network(INN_size=inn_size, FNN_size=fnn_size, starter_learning_rate = start_lr,decay_step = decay_step,decay_rate=decay_rate)
 
+# Create a directory to save models
+os.makedirs("./model", exist_ok=True)
 # Restore model
 if mode == 'tandem':
 	tandem.restore_FNN('./model/DNN_tandem_FNN.ckpt')
@@ -65,7 +68,7 @@ output = open("DNN_"+mode+"-t.txt","w+")
 for n_epoch in range(training_epochs):
 	np.random.shuffle(data_train)
 	#  mini-batch training
-	for i in range(len(data_train)/batch_size):
+	for i in range(len(data_train)//batch_size):
 		batch_x = data_train[i * batch_size : i * batch_size + batch_size, 0 : n_input]
 		batch_y = data_train[i * batch_size : i * batch_size + batch_size, n_input : n_classes+n_input]
 		tandem.train(batch_x, batch_y, mode)
